@@ -40,7 +40,7 @@ internal extension UIView {
 internal extension UIWindow {
 	
 	static func visibleWindow() -> UIWindow? {
-		var currentWindow = UIApplication.shared.keyWindow
+        var currentWindow = UIWindow.key
 		
 		if currentWindow == nil {
 			let frontToBackWindows = Array(UIApplication.shared.windows.reversed()) 
@@ -55,7 +55,13 @@ internal extension UIWindow {
 		
 		return currentWindow
 	}
-	
-}
 
+    static var key: UIWindow? {
+        if #available(iOS 13, *) {
+            return UIApplication.shared.windows.first { $0.isKeyWindow }
+        } else {
+            return UIApplication.shared.keyWindow
+        }
+    }
+}
 #endif
